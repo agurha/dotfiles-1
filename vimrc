@@ -249,7 +249,6 @@ map q: :q
 "Reindent whoel file
 map <F7> mzgg=G`z<CR>
 
-
 " ========== Steve Losh hacks ==========="
 
 " Don't move on *
@@ -451,13 +450,6 @@ au BufNewFile,BufRead *.go setlocal noet ts=4 sw=4 sts=4
 " coffeescript settings
 autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
 
-" scala settings
-autocmd BufNewFile,BufReadPost *.scala setl shiftwidth=2 expandtab
-
-" lua settings
-autocmd BufNewFile,BufRead *.lua setlocal noet ts=4 sw=4 sts=4
-
-
 " Wildmenu completion {{{
 set wildmenu
 " set wildmode=list:longest
@@ -480,7 +472,6 @@ set wildignore+=*.orig                           " Merge resolution files
 
 " Prettify json
 com! JSONFormat %!python -m json.tool
-
 
 " ----------------------------------------- "
 " Plugin configs 			    			"
@@ -511,36 +502,15 @@ nmap  -  <Plug>(choosewin)
 let g:delimitMate_expand_cr = 1
 let g:delimitMate_expand_space = 1
 
-
 " ==================== Fugitive ====================
 nnoremap <leader>ga :Git add %:p<CR><CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gb :Gblame<CR>
 vnoremap <leader>gb :Gblame<CR>
 
-
 " ==================== Airline ====================
 let g:airline_left_sep  = ' '
 let g:airline_right_sep = ' '
-
-
-" ==================== CommandT ====================
-let g:CommandTMaxHeight = 20
-let g:CommandTMaxFiles = 500000
-let g:CommandTMatchWindowReverse = 1
-let g:CommandTMaxCachedDirectories = 0
-let g:CommandTAcceptSelectionTabMap = '<CR>'
-let g:CommandTHighlightColor = 'Typedef'
-
-if has("gui_macvim")
-    macmenu &File.New\ Tab key=<nop>
-    " nnoremap <silent> <c-p> :CommandT /Users/fatih/Code/koding/<CR>
-    nmap <D-p> :CommandT /Users/fatih/Code/koding<CR>
-else
-    nmap <C-t> :CommandT /Users/fatih/Code/koding<cr>
-    imap <C-t> <esc>:CommandT /Users/fatih/Code/koding<cr>
-endif
-
 
 " ==================== Vim-go ====================
 let g:go_fmt_fail_silently = 1
@@ -559,18 +529,6 @@ au FileType go nmap <leader>c <Plug>(go-coverage)
 au FileType go nmap <Leader>ds <Plug>(go-def-split)
 au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
 au FileType go nmap <Leader>dt <Plug>(go-def-tab)
-
-"au FileType go nmap gd <Plug>(go-def)
-"au FileType go nmap <Leader>s <Plug>(go-def-split)
-"au FileType go nmap <Leader>v <Plug>(go-def-vertical)
-"au FileType go nmap <Leader>t <Plug>(go-def-tab)
-
-"au FileType go nmap <Leader>i <Plug>(go-info)
-
-"au FileType go nmap  <leader>r  <Plug>(go-run)
-"au FileType go nmap  <leader>b  <Plug>(go-build)
-
-"au FileType go nmap <Leader>d <Plug>(go-doc)
 
 " ==================== UltiSnips ====================
 function! g:UltiSnips_Complete()
