@@ -6,10 +6,9 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'git://git.wincent.com/command-t.git'
 Plugin 'fatih/vim-go' 
 Plugin 'kien/ctrlp.vim'
-Plugin 'mileszs/ack.vim'
+Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'SirVer/ultisnips'
@@ -20,7 +19,6 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'JazzCore/ctrlp-cmatcher'
 Plugin 'bling/vim-airline'
 Plugin 'cespare/vim-toml'
 
@@ -489,51 +487,16 @@ com! JSONFormat %!python -m json.tool
 " ----------------------------------------- "
 
 " ==================== CtrlP ====================
-let g:ctrlp_cmd = 'CtrlPMRU'		
-let g:ctrlp_match_func  = {'match' : 'matcher#cmatch'}
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_max_height = 10		" maxiumum height of match window
-let g:ctrlp_switch_buffer = 'et'	" jump to a file if it's open already
-let g:ctrlp_mruf_max=450 		" number of recently opened files
-let g:ctrlp_max_files=0  		" do not limit the number of searchable files
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+      \ --ignore .git
+      \ --ignore .svn
+      \ --ignore .hg
+      \ --ignore .DS_Store
+      \ --ignore "**/*.pyc"
+      \ -g ""'
 
-func! MyPrtMappings()
-    let g:ctrlp_prompt_mappings = {
-                \ 'AcceptSelection("e")': ['<c-t>'],
-                \ 'AcceptSelection("t")': ['<cr>', '<2-LeftMouse>'],
-                \ }
-endfunc
-
-func! MyCtrlPTag()
-    let g:ctrlp_prompt_mappings = {
-                \ 'AcceptSelection("e")': ['<cr>', '<2-LeftMouse>'],
-                \ 'AcceptSelection("t")': ['<c-t>'],
-                \ }
-    CtrlPBufTag
-endfunc
-
-let g:ctrlp_buffer_func = { 'exit': 'MyPrtMappings' }
-com! MyCtrlPTag call MyCtrlPTag()
-
-let g:ctrlp_buftag_types = {
-            \ 'go'     	   : '--language-force=go --golang-types=ftv',
-            \ 'coffee'     : '--language-force=coffee --coffee-types=cmfvf',
-            \ 'markdown'   : '--language-force=markdown --markdown-types=hik',
-            \ 'objc'       : '--language-force=objc --objc-types=mpci',
-            \ 'rc'         : '--language-force=rust --rust-types=fTm'
-            \ }
-
-
-" get me a list of files in the current dir
-if has("gui_macvim")
-    nmap <C-f> :CtrlPCurWD<cr>
-    imap <C-f> <esc>:CtrlPCurWD<cr>
-endif
-
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<SPACE>
 
 " ==================== YouCompleteMe ====================
 let g:ycm_autoclose_preview_window_after_completion = 1
@@ -583,18 +546,31 @@ endif
 let g:go_fmt_fail_silently = 1
 let g:go_fmt_command = "gofmt"
 
-
-au FileType go nmap gd <Plug>(go-def)
-au FileType go nmap <Leader>s <Plug>(go-def-split)
-au FileType go nmap <Leader>v <Plug>(go-def-vertical)
-au FileType go nmap <Leader>t <Plug>(go-def-tab)
-
+au FileType go nmap <Leader>s <Plug>(go-implements)
 au FileType go nmap <Leader>i <Plug>(go-info)
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 
-au FileType go nmap  <leader>r  <Plug>(go-run)
-au FileType go nmap  <leader>b  <Plug>(go-build)
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
 
-au FileType go nmap <Leader>d <Plug>(go-doc)
+au FileType go nmap <Leader>ds <Plug>(go-def-split)
+au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+
+"au FileType go nmap gd <Plug>(go-def)
+"au FileType go nmap <Leader>s <Plug>(go-def-split)
+"au FileType go nmap <Leader>v <Plug>(go-def-vertical)
+"au FileType go nmap <Leader>t <Plug>(go-def-tab)
+
+"au FileType go nmap <Leader>i <Plug>(go-info)
+
+"au FileType go nmap  <leader>r  <Plug>(go-run)
+"au FileType go nmap  <leader>b  <Plug>(go-build)
+
+"au FileType go nmap <Leader>d <Plug>(go-doc)
 
 " ==================== UltiSnips ====================
 function! g:UltiSnips_Complete()
